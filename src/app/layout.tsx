@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Raleway } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Toolbar from "@/components/ui/Toolbar";
+import Login from "@/app/login/page"
 
 const raleway = Raleway({subsets:['latin'],variable:'--font-sans'});
 
@@ -21,6 +22,8 @@ export const metadata: Metadata = {
   description: "Manage Your Task...",
 };
 
+// const isLoggedIn =false;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -31,9 +34,11 @@ export default function RootLayout({
       lang="en"
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", raleway.variable)}
     >
+   
+      
       <body className="min-h-full flex flex-col overflow-hidden">
         <div className="relative">
-<Toolbar/>
+            <Toolbar/>
         <div className="overflow-auto p-1" style={{height: `calc(100vh - 48px)`}}>
           {children}
         </div>
