@@ -4,6 +4,8 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import Toolbar from "@/components/ui/Toolbar";
 import { cookies } from "next/headers";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/ui/app-sidebar";
 
 const raleway = Raleway({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -41,26 +43,15 @@ export default async function RootLayout({
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", raleway.variable)}
     >
       <body className="min-h-full flex flex-col overflow-hidden">
-        {isLoggedIn ? (
-          <div className="flex min-h-screen">
-            <aside id='left-side-bar' className="w-64 bg-white border-r-1 p-4 hidden">
-              <nav className="space-y-2">
-                <a href="/dashboard" className="block p-2 hover:bg-teal-800 hover:text-white rounded">Dashboard</a>
-                <a href="/profile" className="block p-2 hover:bg-teal-800 hover:text-white rounded">Profile</a>
-              </nav>
-            </aside>
-            <main className="flex-1 bg-slate-50">
-              <div className="relative">
-                <Toolbar />
-                <div className="overflow-auto p-1" style={{ height: `calc(100vh - 48px)` }}>
-                  {children}
-                </div>
-              </div>
-            </main>
-          </div>
-        ) : (
-          <div className="min-h-screen bg-background">{children}</div>
-        )}
+        {isLoggedIn ? <SidebarProvider>
+          <AppSidebar />
+          <main>
+            <SidebarTrigger />
+            <div className="overflow-auto p-1" style={{ height: `calc(100vh - 48px)` }}>
+              {children}
+            </div>
+          </main>
+        </SidebarProvider> : <div className="min-h-screen bg-background">{children}</div>}
       </body>
 
     </html>
