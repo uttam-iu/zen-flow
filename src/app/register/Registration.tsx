@@ -46,7 +46,7 @@ export function RegisterForm() {
               I Agree <Link href="/terms" className="text-teal-600 hover:underline">Terms & Condition</Link>
             </label>
           </div>
-                    <div className="flex justify-center"><Button className="text-teal-500 cursor-pointer" variant={'outline'} type="submit">Sing Up</Button></div>
+          <div className="flex justify-center"><Button className="text-teal-500 cursor-pointer" variant={'outline'} type="submit">Sing Up</Button></div>
 
         </CardContent>
         <CardFooter className="flex flex-wrap items-center justify-center gap-1 text-sm text-muted-foreground">

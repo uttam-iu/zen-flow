@@ -3,7 +3,7 @@ import { Eye, EyeOff, Lock, Mail } from "lucide-react"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
@@ -11,9 +11,9 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
 
 
-  const onLogin =() => {
-document.cookie = "auth_token=your_jwt_token_here; path=/; max-age=86400; SameSite=Strict";
-window.location.reload()
+  const onLogin = () => {
+    document.cookie = "auth_token=your_jwt_token_here; path=/; max-age=86400; SameSite=Strict";
+    window.location.reload()
   }
 
   return (
@@ -40,11 +40,11 @@ window.location.reload()
             </div>
             <div className="relative">
               <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input 
-                id="password" 
-                type={showPassword ? "text" : "password"} 
-                className="pl-10 pr-10" 
-                required 
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                className="pl-10 pr-10"
+                required
               />
               <button
                 type="button"
@@ -55,8 +55,8 @@ window.location.reload()
               </button>
             </div>
           </div>
-          <div className="flex justify-center"><Button className="text-teal-500 cursor-pointer" variant={'outline'} 
-          onClick={onLogin}
+          <div className="flex justify-center"><Button className="text-teal-500 cursor-pointer" variant={'outline'}
+            onClick={onLogin}
           >Login</Button></div>
         </CardContent>
         <CardFooter className="flex flex-wrap items-center justify-center gap-1 text-sm text-muted-foreground">

@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import Toolbar from "@/components/ui/Toolbar";
 import { cookies } from "next/headers";
 
-const raleway = Raleway({subsets:['latin'],variable:'--font-sans'});
+const raleway = Raleway({ subsets: ['latin'], variable: '--font-sans' });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,11 +30,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-    // ২. কুকি স্টোর থেকে টোকেনটি রিড করুন (অবশ্যই async ফাংশন হতে হবে)
   const cookieStore = await cookies();
   const token = cookieStore.get("auth_token")?.value;
-  
-  // ৩. টোকেন থাকলে isLoggedIn সত্য (true) হবে
+
   const isLoggedIn = !!token;
 
   return (
@@ -42,9 +40,8 @@ export default async function RootLayout({
       lang="en"
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", raleway.variable)}
     >
-
-<body className="min-h-full flex flex-col overflow-hidden">
-      {isLoggedIn ? (
+      <body className="min-h-full flex flex-col overflow-hidden">
+        {isLoggedIn ? (
           <div className="flex min-h-screen">
             <aside id='left-side-bar' className="w-64 bg-slate-900 text-white p-4 hidden">
               <nav className="space-y-2">
@@ -54,24 +51,18 @@ export default async function RootLayout({
             </aside>
             <main className="flex-1 bg-slate-50">
               <div className="relative">
-            <Toolbar/>
-        <div className="overflow-auto p-1" style={{height: `calc(100vh - 48px)`}}>
-          {children}
-        </div>
-        </div>
+                <Toolbar />
+                <div className="overflow-auto p-1" style={{ height: `calc(100vh - 48px)` }}>
+                  {children}
+                </div>
+              </div>
             </main>
           </div>
         ) : (
-          // ৫. লগইন না থাকলে নরমাল লেআউট (যেমন শুধু চাইল্ড পেজগুলো দেখাবে)
           <div className="min-h-screen bg-background">{children}</div>
         )}
-   
-   </body>
-      
-      {/* <body className="min-h-full flex flex-col overflow-hidden">
-        
-        
-      </body> */}
+      </body>
+
     </html>
   );
 }

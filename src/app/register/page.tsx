@@ -3,6 +3,6 @@ import { RegisterForm } from "./Registration";
 
 export default function Login() {
   return (
-    <RegisterForm/>
+    <RegisterForm />
   );
 }
