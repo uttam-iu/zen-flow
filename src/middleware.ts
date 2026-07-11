@@ -9,9 +9,9 @@ export function middleware(request: NextRequest) {
 
   // ৩. যদি টোকেন না থাকে এবং ব্যবহারকারী প্রোটেক্টেড রাউটে যেতে চায়
   // এখানে আমরা ধরছি লগইন, রেজিস্ট্রেশন ও রিসেট ছাড়া বাকি সব পেজ প্রোটেক্টেড
-  const isAuthPage = pathname.startsWith('/login') || 
-                     pathname.startsWith('/register') || 
-                     pathname.startsWith('/reset-password')
+  const isAuthPage = pathname.startsWith('/login')
+                    || pathname.startsWith('/register')
+                    || pathname.startsWith('/forgot-password')
 
   if (!token && !isAuthPage) {
     // লগইন করা না থাকলে লগইন পেজে রিডাইরেক্ট করুন
