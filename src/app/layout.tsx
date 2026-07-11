@@ -43,10 +43,10 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col overflow-hidden">
         {isLoggedIn ? (
           <div className="flex min-h-screen">
-            <aside id='left-side-bar' className="w-64 bg-slate-900 text-white p-4 hidden">
+            <aside id='left-side-bar' className="w-64 bg-white border-r-1 p-4 hidden">
               <nav className="space-y-2">
-                <a href="/dashboard" className="block p-2 hover:bg-slate-800 rounded">Dashboard</a>
-                <a href="/profile" className="block p-2 hover:bg-slate-800 rounded">Profile</a>
+                <a href="/dashboard" className="block p-2 hover:bg-teal-800 hover:text-white rounded">Dashboard</a>
+                <a href="/profile" className="block p-2 hover:bg-teal-800 hover:text-white rounded">Profile</a>
               </nav>
             </aside>
             <main className="flex-1 bg-slate-50">
