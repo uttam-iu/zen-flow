@@ -10,6 +10,12 @@ import { Label } from "@/components/ui/label"
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
 
+
+  const onLogin =() => {
+document.cookie = "auth_token=your_jwt_token_here; path=/; max-age=86400; SameSite=Strict";
+window.location.reload()
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center p-4 bg-background">
       <Card className="w-full max-w-md shadow-lg">
@@ -49,7 +55,9 @@ export function LoginForm() {
               </button>
             </div>
           </div>
-          <div className="flex justify-center"><Button className="text-teal-500 cursor-pointer" variant={'outline'} type="submit">Login</Button></div>
+          <div className="flex justify-center"><Button className="text-teal-500 cursor-pointer" variant={'outline'} 
+          onClick={onLogin}
+          >Login</Button></div>
         </CardContent>
         <CardFooter className="flex flex-wrap items-center justify-center gap-1 text-sm text-muted-foreground">
           New Here?{" "}
