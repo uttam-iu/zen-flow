@@ -3,7 +3,7 @@ name: Deploy Next.js to Vercel
 on:
   push:
     branches:
-      - main # Apnar main branch er nam (e.g., main ba master)
+      - master # Apnar main branch er nam (e.g., main ba master)
 
 jobs:
   deploy:
