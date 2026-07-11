@@ -1,80 +1,11 @@
 'use client'
-// import {
-//     Sidebar,
-//     SidebarContent,
-//     SidebarFooter,
-//     SidebarGroup,
-//     SidebarHeader,
-//     SidebarMenu,
-//     SidebarMenuButton,
-//     SidebarMenuItem,
-// } from "@/components/ui/sidebar"
-// import { ChevronDown, User2 } from "lucide-react"
-// import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./dropdown-menu"
-
-// export function AppSidebar() {
-//     return (
-//         <Sidebar>
-//             <SidebarHeader>
-//                 <SidebarMenu>
-//                     {/* <SidebarMenuItem>
-//                         <DropdownMenu>
-//                             <DropdownMenuTrigger>
-//                                 <SidebarMenuButton>
-//                                 Select Workspace
-//                                 <ChevronDown className="ml-auto" />
-//                                 </SidebarMenuButton>
-//                             </DropdownMenuTrigger>
-//                             <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
-//                                 <DropdownMenuItem>
-//                                     <span>Acme Inc</span>
-//                                 </DropdownMenuItem>
-//                             </DropdownMenuContent>
-//                         </DropdownMenu>
-//                     </SidebarMenuItem>
-//                 </SidebarMenu> */}
-//             </SidebarHeader>
-
-//             {/* <SidebarContent>
-
-//                 {[1, 2].map((project) => (
-//                     <SidebarMenuItem key={project}>
-//                         <SidebarMenuButton>
-//                             <a href={'/'}>
-
-//                                 <span>{project}</span>
-//                             </a>
-//                         </SidebarMenuButton>
-//                     </SidebarMenuItem>
-//                 ))}
-//             </SidebarContent> */}
-
-
-//             {/* <SidebarFooter>
-//                 <SidebarMenu>
-//                     <SidebarMenuItem>
-//                         <SidebarMenuButton>
-//                             <User2 /> Username
-//                         </SidebarMenuButton>
-//                     </SidebarMenuItem>
-//                 </SidebarMenu>
-//             </SidebarFooter> */}
-//         </Sidebar>
-//     )
-// }
-
-
 
 import * as React from "react"
 import {
-    Terminal,
     Bot,
     BookOpen,
     Settings2,
-    ChevronsUpDown,
-    LayoutDashboard
 } from "lucide-react"
-
 import {
     Sidebar,
     SidebarContent,
@@ -85,21 +16,13 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-    SidebarMenuSub,
-    SidebarMenuSubButton,
-    SidebarMenuSubItem,
-    useSidebar,
 } from "@/components/ui/sidebar"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Image from "next/image"
 
 import logoIcon from '../../../public/logo.png';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-    // state checking if it's collapsed to hide submenus completely
-    const { state } = useSidebar()
-    const isCollapsed = state === "collapsed"
 
     return (
         <Sidebar collapsible="icon" className="border-r border-gray-100" {...props}>

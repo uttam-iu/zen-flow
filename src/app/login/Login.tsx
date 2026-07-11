@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+// import Image from "next/image"
+
+// import logoIcon from '../../../public/logo-white.png';
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = React.useState<boolean>(false)

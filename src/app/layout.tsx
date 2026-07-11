@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Raleway } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import Toolbar from "@/components/ui/Toolbar";
 import { cookies } from "next/headers";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
@@ -45,7 +44,7 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col overflow-hidden">
         {isLoggedIn ? <SidebarProvider>
           <AppSidebar />
-          <main>
+          <main className="w-full">
             <SidebarTrigger />
             <div className="overflow-auto p-1" style={{ height: `calc(100vh - 48px)` }}>
               {children}

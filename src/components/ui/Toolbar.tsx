@@ -1,6 +1,5 @@
 'use client'
-import { Bell, LogOutIcon, Menu, SquareUser, User } from 'lucide-react';
-import { FC } from 'react';
+import { LogOutIcon, SquareUser, User } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from './dropdown-menu';
 import { Button } from './button';
 
@@ -36,7 +35,8 @@ export default function Toolbar({
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuLabel>Uttam Kumar</DropdownMenuLabel>
+                  {/* <DropdownMenuLabel>uttam@k.com</DropdownMenuLabel> */}
                   <DropdownMenuItem className={'cursor-pointer'} ><User className="h-4 w-4" />Profile</DropdownMenuItem>
                   <DropdownMenuItem onClick={onLogout} className={'cursor-pointer'} >
                     <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground">

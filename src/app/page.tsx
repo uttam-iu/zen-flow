@@ -1,8 +1,58 @@
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import EACH_PROJECT from '../dummyData/projects.json';
+import { Activity, Check, CreditCard, Edit, Loader, Users } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+
+
+const getProjects = () => {
+  const _p = [];
+  for (let i = 0; i < 10; i += 1) {
+    const ec = { ...EACH_PROJECT };
+    ec.projectId = i + 1;
+    ec.projectName = EACH_PROJECT?.projectName + '_' + (i + 1);
+    _p.push(ec);
+  }
+  return _p;
+}
 
 export default function Home() {
+
+  const projects = getProjects()
+  console.log(projects)
   return (
     <div >
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, amet esse dolor fugit et laboriosam nostrum, doloribus, labore molestiae exercitationem quidem. Accusamus facilis sapiente nulla sed suscipit dolore laboriosam eos quisquam aut aliquam inventore quasi, doloremque exercitationem repellat unde alias temporibus amet eligendi nostrum sit? Facere magni veritatis delectus ipsa unde alias, voluptatum sapiente temporibus debitis, perferendis cumque ducimus excepturi voluptates laboriosam sequi atque quaerat porro saepe sit beatae numquam! Repellendus deserunt accusamus nemo, reiciendis necessitatibus exercitationem nostrum neque. Reiciendis quaerat earum repellat, obcaecati incidunt veritatis molestiae eum veniam fugit. Pariatur dolor totam accusantium quaerat quod. Ea, laborum tempore, labore omnis, similique porro quam iusto accusamus alias ut in eligendi recusandae voluptatem. Error quaerat reprehenderit accusamus illo explicabo, ratione sit laudantium vero alias sed asperiores commodi amet repudiandae, incidunt dolore repellat provident pariatur nisi animi nostrum consectetur iste dolorem quae. Aspernatur iusto maiores ex minima itaque tenetur nemo quisquam, possimus inventore iure. Veniam debitis laboriosam eum adipisci reprehenderit doloribus quis molestias ducimus, quo ratione iure nulla consequuntur quas iusto hic dicta. Dolorum natus at quod, ipsam non nemo voluptate consectetur consequatur vitae aspernatur atque dicta eaque? Odit quisquam sunt numquam laborum alias, veniam aliquid error, nihil voluptate rem nobis quae deserunt praesentium sit. Officia doloribus repellendus non, expedita magnam autem culpa nam nesciunt quaerat ea possimus aut aspernatur voluptatibus pariatur suscipit optio voluptatum dolorum at sed nemo corrupti? Deserunt, voluptatibus! Beatae quia ducimus ea fugit amet doloribus quasi ipsam nam excepturi, ipsum unde enim dolore consectetur sit vel impedit cum molestiae tempora corporis in tempore consequatur debitis! Corrupti tenetur facilis facere voluptatum quo error provident aut officiis saepe velit consequuntur quae debitis accusantium vero, eum labore perspiciatis fugit, id est pariatur qui voluptatibus. Ea odit praesentium quod, quis labore commodi beatae aut iusto nam explicabo. Earum enim molestiae recusandae tempore libero praesentium impedit similique quam? Odio, quas aliquid officia ratione optio cupiditate, possimus repellendus vitae praesentium enim quisquam, hic in eligendi veniam magnam numquam! Fuga neque cupiditate ullam, tenetur voluptatum perferendis non illum perspiciatis ratione quasi, id vel necessitatibus blanditiis doloribus iusto fugit eos earum modi aliquam eligendi commodi soluta alias nulla error. Nesciunt aliquam beatae fugit ducimus enim dolor recusandae incidunt. Officiis odit ducimus numquam voluptatem delectus aliquam vero eum! Eaque sed dicta corrupti laboriosam amet mollitia quisquam molestias quam sunt vero, impedit maxime consectetur laudantium cumque dolores, et distinctio earum voluptates, error nemo dolor eligendi eius. Iste eligendi, laudantium eveniet mollitia quo, inventore voluptas provident at ducimus odit sit officiis facere commodi ab labore nemo, corrupti laborum cum? Quod consequuntur fuga, nesciunt quo necessitatibus nobis deleniti qui consectetur et amet ipsum iure! Eligendi odit exercitationem aperiam totam saepe sunt a repellat ab labore corrupti unde voluptatum corporis aut assumenda sit modi officiis quisquam pariatur tempora laboriosam, amet omnis velit fugiat earum? Maxime natus dignissimos non assumenda sed veritatis nisi at dolore? Sed nihil quisquam repellat alias, ipsum, expedita officia odit ut tempore architecto blanditiis ipsam a possimus minus perspiciatis suscipit, adipisci reiciendis perferendis. Aliquam incidunt, omnis voluptatem accusantium mollitia vero fugit temporibus quos delectus asperiores labore ut illo, nulla dolore numquam reprehenderit nihil! Placeat nesciunt labore animi inventore unde modi hic iste facilis quod praesentium possimus in et ad, quasi vero velit molestiae voluptatem amet dolore quisquam! Perspiciatis quidem, nisi, maxime facere sit ea soluta voluptates quasi ex earum rerum aperiam. Perspiciatis ea, autem minus vitae possimus nulla voluptates atque maiores aliquam eum amet eveniet est dicta minima deleniti velit ut voluptatum? Inventore fuga architecto recusandae. Deserunt vitae id delectus voluptates? Assumenda debitis cupiditate, exercitationem sint mollitia fugiat, quia corrupti odio ut dolorum pariatur optio porro fugit sed blanditiis earum facilis? Ipsam consequuntur modi sit repellat deserunt, explicabo blanditiis! Rem, in consequuntur blanditiis consectetur fugit numquam beatae sunt explicabo, fugiat, amet nihil est? Facere, aut accusamus eos perferendis, doloremque fugit harum ipsa numquam autem incidunt neque, obcaecati accusantium. Libero quam non, corrupti porro iste dolorum consectetur pariatur facilis odit reprehenderit doloremque, ducimus, modi debitis. Aut eum neque ut voluptates provident itaque expedita, unde molestias nemo rem tempore! Nisi alias pariatur nobis. Obcaecati temporibus accusamus blanditiis maiores quidem, hic ea odit consequatur repellendus ipsa! Dolor, magnam? Libero voluptatum mollitia, inventore, facilis, voluptatem velit ipsa unde vero recusandae voluptatibus sint magnam ea fugiat soluta qui. Deleniti laudantium, minus optio quasi fugit ad ratione perferendis reprehenderit cupiditate doloremque modi quaerat voluptas, quia dolor iste eveniet laborum sapiente fuga autem quas quae veniam porro explicabo non. Aliquid beatae odio impedit, exercitationem eum voluptatem esse! Nesciunt error explicabo molestiae nihil? Laudantium possimus sequi, omnis, nesciunt tenetur, suscipit esse eum sunt totam in veritatis est. Ratione necessitatibus neque labore voluptatem veritatis ipsa vitae facilis, asperiores quis dolorum animi fugit architecto dicta quo quia quos. Facere consequuntur natus soluta velit dolorem sunt cupiditate voluptatem minima, amet accusantium unde iusto fuga doloribus libero magni necessitatibus consectetur. Impedit, vel non molestias nisi sapiente consectetur, molestiae doloremque aliquam veniam repellendus unde perspiciatis quos, fuga labore deleniti qui cupiditate maiores quaerat magni assumenda officiis. Iusto quis cum labore nobis quia odit illum neque, libero ducimus ullam veritatis eius esse aspernatur eveniet non explicabo numquam culpa recusandae suscipit ab consequuntur. Voluptates qui dolores ut ab doloremque sapiente enim accusantium? Quidem, consequatur! Incidunt, ducimus. Laudantium veritatis possimus similique blanditiis consequatur architecto quasi est soluta ab! Itaque cumque non vitae at repellendus aperiam. Consectetur sequi facilis, adipisci voluptas praesentium consequuntur provident quod cumque velit libero amet commodi expedita ducimus dicta quibusdam! Adipisci, sunt obcaecati. Incidunt, id excepturi? Dolorem velit ipsum ullam reprehenderit dolor voluptate aliquam corporis, laudantium non perspiciatis rem quam voluptas debitis labore. Nam sint tempore dignissimos itaque molestias libero aspernatur modi quam, magnam, cupiditate doloribus cum nobis ad, quasi quibusdam minus laudantium delectus nemo nulla accusantium quod. Facilis officia quos veritatis tenetur reprehenderit cupiditate, porro, assumenda corporis cumque corrupti earum expedita minima molestiae itaque at dignissimos vero iusto odit quod similique! Dolores in magni quas et voluptas voluptatum tempore nobis nisi non, laudantium culpa exercitationem. Provident quos similique tempora reiciendis reprehenderit. Aspernatur a repudiandae earum exercitationem dicta perspiciatis cumque rem?
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {projects?.map((pro, proInd) => <div key={`${proInd}+${pro?.projectId}_${pro?.projectName}`}>
+          <Card className="shadow-sm border-gray-100 md:col-span-2 lg:col-span-1">
+            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+              <CardTitle className="text-2xl text-teal-500">{pro?.projectName}</CardTitle>
+              <Edit className="w-4 h-4 text-teal-500" />
+            </CardHeader>
+            <CardContent>
+              {pro?.isClosed ? <Badge style={{ color: 'green' }} variant="outline">
+                <Check data-icon="inline-start" />
+                Done
+              </Badge> : <Badge style={{ color: 'orange' }} variant="outline">
+                <Loader data-icon="inline-start" />
+                In Progress
+              </Badge>}
+              <p className="text-xs text-green-500">All systems operational</p>
+            </CardContent>
+            <CardFooter>
+              <AvatarGroup
+              // className="grayscale"
+              >
+                {pro?.participants?.map((each, pId) => (<Avatar key={`${proInd}+${pro?.projectId}_${pro?.projectName}_${pId}_${each?.userId}`}>
+                  <AvatarImage src={each?.photoUrl} alt={each?.fullName?.[0]} />
+                  <AvatarFallback>{each?.fullName?.[0]}</AvatarFallback>
+                </Avatar>))}
+                <AvatarGroupCount>+3</AvatarGroupCount>
+              </AvatarGroup>
+            </CardFooter>
+          </Card>
+        </div>)}
+      </div>
     </div>
   );
 }
