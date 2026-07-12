@@ -46,7 +46,7 @@ export default async function RootLayout({
           <AppSidebar />
           <main className="w-full">
             <SidebarTrigger />
-            <div className="overflow-auto p-1" style={{ height: `calc(100vh - 48px)` }}>
+            <div id='main-content' className="overflow-auto p-1" style={{ height: `calc(100vh - 48px)` }}>
               {children}
             </div>
           </main>
