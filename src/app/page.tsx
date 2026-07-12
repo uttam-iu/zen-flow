@@ -3,6 +3,7 @@ import EACH_PROJECT from '../dummyData/projects.json';
 import { Activity, Check, CreditCard, Edit, Loader, Users } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import Link from 'next/link';
 
 
 const getProjects = () => {
@@ -19,11 +20,11 @@ const getProjects = () => {
 export default function Home() {
 
   const projects = getProjects()
-  console.log(projects)
+
   return (
     <div >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {projects?.map((pro, proInd) => <div key={`${proInd}+${pro?.projectId}_${pro?.projectName}`}>
+        {projects?.map((pro, proInd) => <Link href={`/projects/${pro?.projectId}`} key={`${proInd}+${pro?.projectId}_${pro?.projectName}`}>
           <Card className="shadow-sm border-gray-100 md:col-span-2 lg:col-span-1">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-2xl text-teal-500">{pro?.projectName}</CardTitle>
@@ -51,7 +52,7 @@ export default function Home() {
               </AvatarGroup>
             </CardFooter>
           </Card>
-        </div>)}
+        </Link>)}
       </div>
     </div>
   );

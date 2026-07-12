@@ -24,7 +24,7 @@ export default function Toolbar({
           >
             {children}
           </div>
-          <div>breadcrumb</div>
+          {/* <div>breadcrumb</div> */}
         </div>
         <div className='flex gap-2'>
           {/* <div className='flex items-center cursor-pointer text-teal-800 hover:scale-[1.25]'><Bell /></div> */}
