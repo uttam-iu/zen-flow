@@ -1,30 +1,18 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import EACH_PROJECT from '../dummyData/projects.json';
-import { Activity, Check, CreditCard, Edit, Loader, Users } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from '@/components/ui/avatar';
+import { getProjects } from '../dummyData/projects';
+import { Check, Edit, Loader } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-
-
-const getProjects = () => {
-  const _p = [];
-  for (let i = 0; i < 10; i += 1) {
-    const ec = { ...EACH_PROJECT };
-    ec.projectId = i + 1;
-    ec.projectName = EACH_PROJECT?.projectName + '_' + (i + 1);
-    _p.push(ec);
-  }
-  return _p;
-}
+import { PROJECT_TYPE } from '@/types/project.types';
+import MyAvatarGroup from '@/components/MyAvatarGroup';
 
 export default function Home() {
-
-  const projects = getProjects()
+  const projects: PROJECT_TYPE[] = getProjects();
 
   return (
     <div >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {projects?.map((pro, proInd) => <Link href={`/projects/${pro?.projectId}`} key={`${proInd}+${pro?.projectId}_${pro?.projectName}`}>
+        {projects?.map((pro: PROJECT_TYPE, proInd: number) => <Link href={`/projects/${pro?.projectId}`} key={`${proInd}+${pro?.projectId}_${pro?.projectName}`}>
           <Card className="shadow-sm border-gray-100 md:col-span-2 lg:col-span-1">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-2xl text-teal-500">{pro?.projectName}</CardTitle>
@@ -41,15 +29,7 @@ export default function Home() {
               <p className="text-xs text-green-500">All systems operational</p>
             </CardContent>
             <CardFooter>
-              <AvatarGroup
-              // className="grayscale"
-              >
-                {pro?.participants?.map((each, pId) => (<Avatar key={`${proInd}+${pro?.projectId}_${pro?.projectName}_${pId}_${each?.userId}`}>
-                  <AvatarImage src={each?.photoUrl} alt={each?.fullName?.[0]} />
-                  <AvatarFallback>{each?.fullName?.[0]}</AvatarFallback>
-                </Avatar>))}
-                <AvatarGroupCount>+3</AvatarGroupCount>
-              </AvatarGroup>
+              <MyAvatarGroup users={pro?.participants || []} />
             </CardFooter>
           </Card>
         </Link>)}

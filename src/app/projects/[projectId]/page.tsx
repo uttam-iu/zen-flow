@@ -15,19 +15,35 @@ import { arrayMove, SortableContext, horizontalListSortingStrategy } from '@dnd-
 import { createPortal } from 'react-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Plus, Kanban } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { ColumnType, TaskType } from '@/types/task.types'
 import BoardColumn from '@/components/BoardColumn'
 import TaskCard from '@/components/TaskCard'
 import { useSidebar } from '@/components/ui/sidebar'
+import { useAppState } from '@/context/AppContext'
+import { getProjects } from '@/dummyData/projects'
+import { PROJECT_TYPE } from '@/types/project.types'
+import { useParams } from 'next/navigation'
 
 export default function KanbanBoard() {
+    const projects: PROJECT_TYPE[] = getProjects()
+
+
+    const { projectId } = useParams()
+
     React.useEffect(() => {
         const mainContentElem = document.getElementById('main-content');
         if (mainContentElem) mainContentElem.style.overflow = 'hidden'
     }, [])
 
     const { open, isMobile } = useSidebar()
+
+    const ctx = useAppState()
+
+    React.useEffect(() => {
+        const project = projects?.find(ec => ec?.projectId?.toString() === projectId?.toString())
+        if (project) ctx?.setProject?.(project)
+    }, [projectId])
 
     // Dynamic dynamic width calculate structure based on state
     const getMaxWidthClass = () => {

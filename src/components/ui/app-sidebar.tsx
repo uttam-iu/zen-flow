@@ -21,8 +21,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Image from "next/image"
 
 import logoIcon from '../../../public/logo.png';
+import { useAppState } from "@/context/AppContext"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const ctx = useAppState()
+
 
     return (
         <Sidebar collapsible="icon" className="border-r border-gray-100" {...props}>
@@ -88,12 +91,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
                             <Avatar className="h-8 w-8 rounded-lg">
-                                <AvatarImage src="https://github.com" alt="UK" />
-                                <AvatarFallback className="rounded-lg">UK</AvatarFallback>
+                                <AvatarImage src={ctx?.state?.user?.photoUrl || ''} alt="UK" />
+                                <AvatarFallback className="rounded-lg">{ctx?.state?.user?.fullName?.[0]}</AvatarFallback>
                             </Avatar>
                             <div className="grid flex-1 text-left text-sm leading-tight">
-                                <span className="truncate font-semibold">Uttam Kumar</span>
-                                <span className="truncate text-xs text-gray-500">u@k.com</span>
+                                <span className="truncate font-semibold">{ctx?.state?.user?.fullName}</span>
+                                <span className="truncate text-xs text-gray-500">{ctx?.state?.user?.userName}</span>
                             </div>
                             {/* <ChevronsUpDown className="ml-auto size-4 text-gray-400" /> */}
                         </SidebarMenuButton>

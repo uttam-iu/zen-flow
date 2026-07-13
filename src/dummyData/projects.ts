@@ -1,5 +1,6 @@
+import { PROJECT_TYPE } from "@/types/project.types";
 
-  {
+  const EACH_PROJECT: PROJECT_TYPE  = {
     "projectId": 1,
     "projectName": "Smart Campus",
     "projectDescription": "Smart Campus is a ERP solution for university management...",
@@ -43,5 +44,17 @@
         }
     ],
     "isClosed": false,
-    "closeAt": null
+    "closedAt": null
   }
+
+export const getProjects = (): PROJECT_TYPE[] => {
+  const _p = [];
+  for (let i = 0; i < 10; i += 1) {
+    const ec = { ...EACH_PROJECT };
+    ec.projectId = i + 1;
+    ec.projectName = EACH_PROJECT?.projectName + '_' + (i + 1);
+    _p.push(ec);
+  }
+  return _p;
+}
+

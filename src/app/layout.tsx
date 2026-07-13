@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { cookies } from "next/headers";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
+import { AppProvider } from "@/context/AppContext";
 
 const raleway = Raleway({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -23,14 +24,11 @@ export const metadata: Metadata = {
   description: "Manage Your Task...",
 };
 
-// const isLoggedIn =false;
-
 export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   const cookieStore = await cookies();
   const token = cookieStore.get("auth_token")?.value;
 
@@ -42,15 +40,19 @@ export default async function RootLayout({
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", raleway.variable)}
     >
       <body className="min-h-full flex flex-col overflow-hidden">
-        {isLoggedIn ? <SidebarProvider>
-          <AppSidebar />
-          <main className="w-full">
-            <SidebarTrigger />
-            <div id='main-content' className="overflow-auto p-1" style={{ height: `calc(100vh - 48px)` }}>
-              {children}
-            </div>
-          </main>
-        </SidebarProvider> : <div className="min-h-screen bg-background">{children}</div>}
+        <AppProvider>
+          {isLoggedIn ?
+            <SidebarProvider>
+              <AppSidebar />
+              <main className="w-full">
+                <SidebarTrigger />
+                <div id='main-content' className="overflow-auto p-1" style={{ height: `calc(100vh - 48px)` }}>
+                  {children}
+                </div>
+              </main>
+            </SidebarProvider>
+            : <div className="min-h-screen bg-background">{children}</div>}
+        </AppProvider>
       </body>
 
     </html>

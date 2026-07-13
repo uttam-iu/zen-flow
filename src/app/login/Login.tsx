@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import Dummy_Uers from "@/dummyData/users.json";
 // import Image from "next/image"
 
 // import logoIcon from '../../../public/logo-white.png';
@@ -24,10 +25,13 @@ export function LoginForm() {
     const userName = target?.userName?.value;
     const password = target?.password?.value;
 
-    console.log({ userName, password });
-    if (userName === 'u@k.com' && password === '12345') {
+    const userIndb = Dummy_Uers?.find(ec => ec?.userName?.trim() === userName?.trim()) || null
+
+    if (userIndb && password === '12345') {
       setLoginError(false)
-      document.cookie = "auth_token=your_jwt_token_here; path=/; max-age=86400; SameSite=Strict";
+      document.cookie = 'auth_token=your_jwt_token_here; path=/';
+      document.cookie = `user=${userIndb?.userId}; path=/`;
+      document.cookie = 'max-age=86400; SameSite=Strict; path=/';
       window.location.reload()
     } else {
       setLoginError(true)

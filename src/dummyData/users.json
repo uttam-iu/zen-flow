@@ -1,0 +1,32 @@
+[
+    {
+        "userId": 1,
+        "userName": "uttam@k.com",
+        "fullName": "Uttam Kumar",
+        "photoUrl": "https://github.com/shadcn.png"
+    },
+    {
+        "userId": 2,
+        "userName": "sagor@k.com",
+        "fullName": "Assaduzzaman Sagor",
+        "photoUrl": "https://github.com/maxleiter.png"
+    },
+    {
+        "userId": 3,
+        "userName": "shibly@k.com",
+        "fullName": "Shibly Mustafiz",
+        "photoUrl": "https://github.com/evilrabbit.png"
+    },
+    {
+        "userId": 4,
+        "userName": "ariful@k.com",
+        "fullName": "Ariful Islam",
+        "photoUrl": "https://github.com/maxleiter.png"
+    },
+    {
+        "userId": 5,
+        "userName": "junayed@k.com",
+        "fullName": "Junayed Fahim",
+        "photoUrl": "https://github.com/evilrabbit.png"
+    }
+]
