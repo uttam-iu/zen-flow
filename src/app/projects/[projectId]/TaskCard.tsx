@@ -18,7 +18,7 @@ export default function TaskCard({ task }: Props) {
         transition,
         isDragging,
     } = useSortable({
-        id: task.id,
+        id: task?.taskId,
         data: {
             type: 'Task',
             task,
@@ -54,7 +54,7 @@ export default function TaskCard({ task }: Props) {
                 <GripVertical size={16} />
             </button>
             <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                {task.content}
+                {task?.taskTitle}
             </span>
         </div>
     );

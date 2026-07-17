@@ -7,7 +7,7 @@ import { PROJECT_TYPE } from "@/types/project.types";
     "createdAt": "2026-07-12 11:30",
     "createdBy": {
         "userId": 1,
-        "userName": "u@k.com",
+        "userName": "uttam@k.com",
         "fullName": "Uttam Kumar",
         "photoUrl": "https://github.com/shadcn.png"
     },

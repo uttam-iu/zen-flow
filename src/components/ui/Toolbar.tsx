@@ -15,7 +15,6 @@ export default function Toolbar({
 }>) {
 	const ctx = useAppState()
 	React.useEffect(() => {
-		console.log(document.cookie)
 		const cookies = new URLSearchParams(document.cookie.replaceAll('; ', '&'));
 		const userId = cookies?.get('user') || '';
 		const userIndb = Dummy_Uers?.find(ec => ec?.userId?.toString() === userId?.toString()) || null;

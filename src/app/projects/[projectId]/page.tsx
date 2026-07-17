@@ -13,22 +13,19 @@ import {
 } from '@dnd-kit/core'
 import { arrayMove, SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 import { createPortal } from 'react-dom'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Plus } from 'lucide-react'
 import { ColumnType, TaskType } from '@/types/task.types'
-import BoardColumn from '@/components/BoardColumn'
-import TaskCard from '@/components/TaskCard'
+import BoardColumn from './BoardColumn'
+import TaskCard from '@/app/projects/[projectId]/TaskCard'
 import { useSidebar } from '@/components/ui/sidebar'
 import { useAppState } from '@/context/AppContext'
 import { getProjects } from '@/dummyData/projects'
 import { PROJECT_TYPE } from '@/types/project.types'
 import { useParams } from 'next/navigation'
+import NewSection from './NewSection'
+import { columnData, taskData } from '@/dummyData/tasks'
 
 export default function KanbanBoard() {
     const projects: PROJECT_TYPE[] = getProjects()
-
-
     const { projectId } = useParams()
 
     React.useEffect(() => {
@@ -52,18 +49,11 @@ export default function KanbanBoard() {
         // Note: 256px layout config setup configuration mapping runtime dependency setup checks
     }
 
-    const [columns, setColumns] = useState<ColumnType[]>([
-        { id: 'todo', title: 'To Do' },
-        { id: 'progress', title: 'In Progress' },
-    ])
-    const [tasks, setTasks] = useState<TaskType[]>([
-        { id: '1', columnId: 'todo', content: 'Create Shadcn components' },
-        { id: '2', columnId: 'todo', content: 'Integrate dnd-kit context' },
-    ])
+    const [columns, setColumns] = useState<ColumnType[]>(columnData)
+    const [tasks, setTasks] = useState<TaskType[]>(taskData)
 
     const [activeColumn, setActiveColumn] = useState<ColumnType | null>(null)
     const [activeTask, setActiveTask] = useState<TaskType | null>(null)
-    const [newBoardTitle, setNewBoardTitle] = useState('')
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -72,15 +62,12 @@ export default function KanbanBoard() {
     )
 
     // Handlers to Create Column / Tasks
-    const handleCreateColumn = () => {
-        if (!newBoardTitle.trim()) return
+    const createNewSection = (newSection: string): void => {
         const id = `col-${Date.now()}`
-        setColumns([...columns, { id, title: newBoardTitle }])
-        setNewBoardTitle('')
+        setColumns([...columns, { id, title: newSection }])
     }
 
-    const handleCreateTask = (columnId: string, content: string) => {
-        const newTask: TaskType = { id: `task-${Date.now()}`, columnId, content }
+    const handleCreateTask = (newTask: TaskType) => {
         setTasks([...tasks, newTask])
     }
 
@@ -112,8 +99,8 @@ export default function KanbanBoard() {
         // Task over Task
         if (isActiveATask && isOverATask) {
             setTasks((tasks) => {
-                const activeIndex = tasks.findIndex((t) => t.id === activeId)
-                const overIndex = tasks.findIndex((t) => t.id === overId)
+                const activeIndex = tasks.findIndex((t) => t.taskId === activeId)
+                const overIndex = tasks.findIndex((t) => t.taskId === overId)
 
                 if (tasks[activeIndex].columnId !== tasks[overIndex].columnId) {
                     tasks[activeIndex].columnId = tasks[overIndex].columnId
@@ -127,7 +114,7 @@ export default function KanbanBoard() {
         const isOverAColumn = over.data.current?.type === 'Column'
         if (isActiveATask && isOverAColumn) {
             setTasks((tasks) => {
-                const activeIndex = tasks.findIndex((t) => t.id === activeId)
+                const activeIndex = tasks.findIndex((t) => t.taskId === activeId)
                 tasks[activeIndex].columnId = overId.toString()
                 return arrayMove(tasks, activeIndex, activeIndex)
             })
@@ -158,21 +145,6 @@ export default function KanbanBoard() {
 
     return (
         <div className="min-h-screen bg-white text-zinc-900 flex flex-col font-sans select-none">
-            {/* Header controls */}
-            <div className="border-b border-zinc-100">
-                <div className="flex items-center gap-2 pb-1">
-                    <Input
-                        placeholder="New Column Title"
-                        value={newBoardTitle}
-                        onChange={(e) => setNewBoardTitle(e.target.value)}
-                        className="w-full sm:w-64 h-9 text-sm border-zinc-200 shadow-none bg-zinc-50/50"
-                        onKeyDown={(e) => e.key === 'Enter' && handleCreateColumn()}
-                    />
-                    <Button onClick={handleCreateColumn} size="sm" className="bg-zinc-900 text-white hover:bg-zinc-800 text-xs shrink-0 h-9 font-medium px-4">
-                        <Plus size={15} className="mr-1" /> New Board
-                    </Button>
-                </div>
-            </div>
 
             {/* Main Drag Canvas Context */}
             <div className={`flex-1 flex gap-6 items-start overflow-x-auto pt-1 custom-scrollbar ${getMaxWidthClass()}`}>
@@ -192,6 +164,7 @@ export default function KanbanBoard() {
                             />
                         ))}
                     </SortableContext>
+                    <NewSection createNewSection={createNewSection} />
 
                     {/* Smooth Floating Overlay Portal */}
                     {typeof window !== 'undefined' &&
