@@ -20,7 +20,6 @@ const NewSection: FC<NewSectionProps> = ({ createNewSection }) => {
 
     return (
         <div className="border-b border-zinc-100">
-
             {showCreateBtn ? <Button variant={'outline'} onClick={() => setShowCreateBtn(false)} size="sm" className="text-xs shrink-0 h-9 font-medium px-4">
                 <Plus size={15} className="mr-1" /> New Section
             </Button> :

@@ -7,7 +7,6 @@ interface ColumnHeaderProps {
     totalTasks: number;
     attributes: any;
     listeners: any;
-
 }
 
 const ColumnHeader: FC<ColumnHeaderProps> = ({ column, totalTasks, attributes, listeners }) => {
