@@ -71,15 +71,19 @@ const NewTask: FC<NewTaskProps> = ({ onCreateTask, column, task }) => {
                     <Plus size={14} className="mr-1" /> Add Task
                 </Button>
                 :
-                <Input
-                    placeholder="New task title..."
-                    value={formData?.taskTitle}
-                    onChange={(e) => handleOnChange('taskTitle', e?.target?.value || '')}
-                    className="bg-white border-zinc-200 h-9 text-xs"
-                    onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
-                    onBlur={handleAddTask}
-                    autoFocus
-                />
+                <div
+                    className="p-1 w-full bg-white hover:bg-zinc-100 border border-zinc-200 text-zinc-700 text-xs font-medium"
+                >
+                    <Input
+                        placeholder="New task title..."
+                        value={formData?.taskTitle}
+                        onChange={(e) => handleOnChange('taskTitle', e?.target?.value || '')}
+                        className="bg-white border-zinc-200 h-9 text-xs"
+                        onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
+                        onBlur={handleAddTask}
+                        autoFocus
+                    />
+                </div>
             }
         </div>
     );
