@@ -1,0 +1,14 @@
+[
+    {
+        "label": "High", "value": "High", "bgColor": "orange"
+    },
+    {
+        "label": "Medium", "value": "Medium", "bgColor": "green"
+    },
+    {
+        "label": "Low", "value": "Low", "bgColor": "gray"
+    },
+    {
+        "label": "Critical", "value": "Critical", "bgColor": "crimson"
+    }
+]

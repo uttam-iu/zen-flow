@@ -3,11 +3,6 @@ export const columnData = [
         { id: 2, title: 'In Progress' },
 ]
 
-// export const taskData = [
-//         { id: '1', columnId: 'todo', content: 'Create Shadcn components' },
-//         { id: '2', columnId: 'todo', content: 'Integrate dnd-kit context' },
-// ]
-
 
 export const taskData = [
     {

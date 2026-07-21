@@ -18,11 +18,16 @@ const MyAvatarGroup: FC<AvatarGroupPropsType> = ({ users = [], maxItem = 3, clas
             <AvatarGroup
             // className="grayscale"
             >
-                {visibleItem?.map((each: USER_TYPE, pId: number) => (<Avatar key={`${pId}_${each?.userName}_${pId}_${each?.userId}`}>
+                {visibleItem?.map((each: USER_TYPE, pId: number) => (<Avatar
+                    // className={'w-[24px] h-[24px]'}
+                    size="sm"
+                    key={`${pId}_${each?.userName}_${pId}_${each?.userId}`}>
                     <AvatarImage src={each?.photoUrl || ''} alt={each?.fullName?.[0]} />
                     <AvatarFallback>{each?.fullName?.[0]}</AvatarFallback>
                 </Avatar>))}
-                {extra > 0 && <AvatarGroupCount>+3</AvatarGroupCount>}
+                {extra > 0 && <AvatarGroupCount
+                    className={'w-[24px] h-[24px] font-[12px]'}
+                >+3</AvatarGroupCount>}
             </AvatarGroup>
         </div>
     )

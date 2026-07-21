@@ -5,6 +5,10 @@ import { Plus } from 'lucide-react';
 import React, { FC } from 'react';
 import { useAppState } from '@/context/AppContext';
 import { SelectMenu } from '@/components/SelectMenu';
+import PRIORITY from '@/dummyData/priority.json';
+import TASK_TYPE from '@/dummyData/task_type.json';
+import { Textarea } from '@/components/ui/textarea';
+import Assignee from '@/components/Assignee';
 
 interface NewTaskProps {
     onCreateTask: (task: TaskType) => void;
@@ -34,7 +38,7 @@ const NewTask: FC<NewTaskProps> = ({ onCreateTask, column, task }) => {
     const ctx = useAppState()
 
     const [formData, setFormData] = React.useState<TaskType>(getInitialValue(column, task));
-    const [showCreateBtn, setShowCreateBtn] = React.useState<boolean>(false);
+    const [showCreateBtn, setShowCreateBtn] = React.useState<boolean>(true);
 
     const handleOnChange = (_name: string, _value?: string): void => {
         setFormData(prevState => {
@@ -73,26 +77,25 @@ const NewTask: FC<NewTaskProps> = ({ onCreateTask, column, task }) => {
                 </Button>
                 :
                 <div className='p-1 border border-zinc-200'>
-                    <div>
-                        <Input
-                            placeholder="New task title..."
-                            value={formData?.taskTitle}
-                            onChange={(e) => handleOnChange('taskTitle', e?.target?.value || '')}
-                            className="bg-white border-zinc-200 h-9 text-xs"
-                            onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
-                            // onBlur={handleAddTask}
-                            autoFocus
-                        />
+                    <div className='py-1 flex'>
+                        <div className='flex pr-1'>⏲</div>
+                        <div className='div items-center flex-1'>
+
+                            <Textarea
+                                placeholder="New task title..."
+                                value={formData?.taskTitle}
+                                onChange={(e) => handleOnChange('taskTitle', e?.target?.value || '')}
+                                className="bg-white min-h-[32px] text-xs "
+                                onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
+                                // onBlur={handleAddTask}
+                                autoFocus
+                            />
+                        </div>
                     </div>
                     <div className='pt-1'>
-                        <SelectMenu name='priority' onChange={handleOnChange} value={''} label='Priority' items={[
-                            {
-                                label: 'Bug Fix', value: 'Bug Fix'
-                            },
-                            {
-                                label: 'Feature', value: 'Feature'
-                            }
-                        ]} />
+                        <SelectMenu name='priorityType' onChange={handleOnChange} creatable value={formData?.priorityType || ''} label='Priority' items={PRIORITY} />
+                        <SelectMenu name='taskType' onChange={handleOnChange} creatable value={formData?.taskType || ''} label='Task Type' items={TASK_TYPE} />
+                        <Assignee users={[]} creatable />
                     </div>
 
                 </div>
