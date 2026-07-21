@@ -39,8 +39,8 @@ export default function KanbanBoard() {
 
     React.useEffect(() => {
         const project = projects?.find(ec => ec?.projectId?.toString() === projectId?.toString())
-        if (project) ctx?.setProject?.(project)
-    }, [projectId])
+        if (project && ctx?.state?.project?.projectId?.toString() !== projectId?.toString()) ctx?.setProject?.(project)
+    }, [ctx, projectId, projects])
 
     // Dynamic dynamic width calculate structure based on state
     const getMaxWidthClass = () => {
@@ -145,6 +145,10 @@ export default function KanbanBoard() {
 
     return (
         <div className="min-h-screen bg-white text-zinc-900 flex flex-col font-sans select-none">
+            {/* 
+         <div className="border-t border-zinc-100 flex flex-col h-8 gap-2">
+            dfknsfnj
+         </div> */}
 
             {/* Main Drag Canvas Context */}
             <div className={`flex-1 flex gap-6 items-start overflow-x-auto pt-1 custom-scrollbar ${getMaxWidthClass()}`}>

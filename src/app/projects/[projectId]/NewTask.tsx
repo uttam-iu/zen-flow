@@ -4,6 +4,7 @@ import { ColumnType, TaskType } from '@/types/task.types';
 import { Plus } from 'lucide-react';
 import React, { FC } from 'react';
 import { useAppState } from '@/context/AppContext';
+import { SelectMenu } from '@/components/SelectMenu';
 
 interface NewTaskProps {
     onCreateTask: (task: TaskType) => void;
@@ -33,7 +34,7 @@ const NewTask: FC<NewTaskProps> = ({ onCreateTask, column, task }) => {
     const ctx = useAppState()
 
     const [formData, setFormData] = React.useState<TaskType>(getInitialValue(column, task));
-    const [showCreateBtn, setShowCreateBtn] = React.useState<boolean>(true);
+    const [showCreateBtn, setShowCreateBtn] = React.useState<boolean>(false);
 
     const handleOnChange = (_name: string, _value?: string): void => {
         setFormData(prevState => {
@@ -71,18 +72,29 @@ const NewTask: FC<NewTaskProps> = ({ onCreateTask, column, task }) => {
                     <Plus size={14} className="mr-1" /> Add Task
                 </Button>
                 :
-                <div
-                    className="p-1 w-full bg-white hover:bg-zinc-100 border border-zinc-200 text-zinc-700 text-xs font-medium"
-                >
-                    <Input
-                        placeholder="New task title..."
-                        value={formData?.taskTitle}
-                        onChange={(e) => handleOnChange('taskTitle', e?.target?.value || '')}
-                        className="bg-white border-zinc-200 h-9 text-xs"
-                        onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
-                        onBlur={handleAddTask}
-                        autoFocus
-                    />
+                <div className='p-1 border border-zinc-200'>
+                    <div>
+                        <Input
+                            placeholder="New task title..."
+                            value={formData?.taskTitle}
+                            onChange={(e) => handleOnChange('taskTitle', e?.target?.value || '')}
+                            className="bg-white border-zinc-200 h-9 text-xs"
+                            onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
+                            // onBlur={handleAddTask}
+                            autoFocus
+                        />
+                    </div>
+                    <div className='pt-1'>
+                        <SelectMenu name='priority' onChange={handleOnChange} value={''} label='Priority' items={[
+                            {
+                                label: 'Bug Fix', value: 'Bug Fix'
+                            },
+                            {
+                                label: 'Feature', value: 'Feature'
+                            }
+                        ]} />
+                    </div>
+
                 </div>
             }
         </div>
