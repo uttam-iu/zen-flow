@@ -1,5 +1,6 @@
 'use client'
 
+import MyAvatarGroup from '@/components/MyAvatarGroup';
 import { TaskType } from '@/types/task.types';
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
@@ -7,9 +8,10 @@ import { GripVertical } from 'lucide-react'
 
 interface Props {
     task: TaskType;
+    isOverlay?: boolean;
 }
 
-export default function TaskCard({ task }: Props) {
+export default function TaskCard({ task, isOverlay }: Props) {
     const {
         attributes,
         listeners,
@@ -23,12 +25,29 @@ export default function TaskCard({ task }: Props) {
             type: 'Task',
             task,
         },
+        disabled: isOverlay,
     });
 
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
     };
+
+    if (isOverlay) {
+        return (
+            <div className="bg-white dark:bg-zinc-950 p-4 rounded-lg border border-zinc-300 shadow-xl flex items-center gap-2 cursor-grabbing ring-1 ring-zinc-400/20">
+                <div className="text-zinc-500">
+                    <GripVertical size={16} />
+                </div>
+                <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200 flex-1">
+                    {task?.taskTitle}
+                </span>
+                {task?.assignee && task.assignee.length > 0 && (
+                    <MyAvatarGroup users={task.assignee} maxItem={2} className="ml-auto shrink-0" />
+                )}
+            </div>
+        );
+    }
 
     if (isDragging) {
         return (
@@ -39,8 +58,6 @@ export default function TaskCard({ task }: Props) {
             />
         );
     }
-
-    console.log(task)
 
     return (
         <div
@@ -55,9 +72,12 @@ export default function TaskCard({ task }: Props) {
             >
                 <GripVertical size={16} />
             </button>
-            <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300 flex-1">
                 {task?.taskTitle}
             </span>
+            {task?.assignee && task.assignee.length > 0 && (
+                <MyAvatarGroup users={task.assignee} maxItem={2} className="ml-auto shrink-0" />
+            )}
         </div>
     );
 }

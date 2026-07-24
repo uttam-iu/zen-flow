@@ -9,6 +9,7 @@ import PRIORITY from '@/dummyData/priority.json';
 import TASK_TYPE from '@/dummyData/task_type.json';
 import { Textarea } from '@/components/ui/textarea';
 import Assignee from '@/components/Assignee';
+import DueDate from '@/components/DueDate';
 import { USER_TYPE } from '@/types/user.types';
 
 interface NewTaskProps {
@@ -93,10 +94,11 @@ const NewTask: FC<NewTaskProps> = ({ onCreateTask, column, task }) => {
                             />
                         </div>
                     </div>
-                    <div className='pt-1'>
+                    <div className='pt-1 flex items-center flex-wrap gap-1'>
                         <SelectMenu name='priorityType' onChange={handleOnChange} creatable value={formData?.priorityType || ''} label='Priority' items={PRIORITY} />
                         <SelectMenu name='taskType' onChange={handleOnChange} creatable value={formData?.taskType || ''} label='Task Type' items={TASK_TYPE} />
-                        <Assignee name='assignee' values={formData?.assignee?.map(ec => ec?.userId) || []} creatable onChange={handleOnChange} />
+                        <Assignee name='assignee' values={formData?.assignee || []} creatable onChange={handleOnChange} />
+                        <DueDate name='dueDate' value={formData?.dueDate || ''} onChange={handleOnChange} />
                     </div>
 
                     <div className='flex'>

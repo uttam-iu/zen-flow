@@ -11,9 +11,10 @@ interface Props {
     column: ColumnType;
     tasks: TaskType[];
     onCreateTask: (newTask: TaskType) => void;
+    isOverlay?: boolean;
 }
 
-export default function BoardColumn({ column, tasks, onCreateTask }: Props) {
+export default function BoardColumn({ column, tasks, onCreateTask, isOverlay }: Props) {
     const taskIds = tasks.map((t) => t?.taskId)
 
     const {
@@ -29,6 +30,7 @@ export default function BoardColumn({ column, tasks, onCreateTask }: Props) {
             type: 'Column',
             column,
         },
+        disabled: isOverlay,
     });
 
     const style = {
@@ -36,12 +38,39 @@ export default function BoardColumn({ column, tasks, onCreateTask }: Props) {
         transition,
     };
 
+    if (isOverlay) {
+        return (
+            <div
+                className="w-[300px] min-w-[300px] bg-white dark:bg-zinc-900 border border-zinc-300 shadow-2xl rounded-xl flex flex-col p-4 opacity-95 ring-1 ring-zinc-400/30"
+            >
+                <div className="flex items-center justify-between mb-4 pb-2 border-b border-zinc-100 dark:border-zinc-800">
+                    <div className="flex items-center gap-2">
+                        <div className="text-zinc-500 cursor-grabbing">
+                            <GripHorizontal size={18} />
+                        </div>
+                        <h3 className="font-semibold text-zinc-800 dark:text-zinc-200 text-sm tracking-tight">
+                            {column?.title}
+                        </h3>
+                    </div>
+                    <span className="text-xs bg-zinc-200/60 dark:bg-zinc-800 px-2 py-0.5 rounded-full font-medium text-zinc-600 dark:text-zinc-400">
+                        {tasks?.length}
+                    </span>
+                </div>
+                <div className="flex-1 space-y-2 pr-1 min-h-[100px]">
+                    {tasks?.map((task) => (
+                        <TaskCard key={task?.taskId} task={task} />
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
     if (isDragging) {
         return (
             <div
                 ref={setNodeRef}
                 style={style}
-                className="w-[300px] h-[600px] opacity-40 bg-zinc-50 border-2 border-dashed border-zinc-300 rounded-xl"
+                className="w-[300px] min-w-[300px] min-h-[500px] opacity-40 bg-zinc-50 dark:bg-zinc-900 border-2 border-dashed border-zinc-300 rounded-xl"
             />
         );
     }
@@ -72,7 +101,7 @@ export default function BoardColumn({ column, tasks, onCreateTask }: Props) {
             </div>
 
             {/* Task List Context */}
-            <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
+            <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar min-h-[100px]">
                 <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
                     {tasks?.map((task) => (
                         <TaskCard key={task?.taskId} task={task} />

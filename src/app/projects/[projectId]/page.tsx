@@ -10,6 +10,9 @@ import {
     PointerSensor,
     useSensor,
     useSensors,
+    closestCorners,
+    pointerWithin,
+    CollisionDetection,
 } from '@dnd-kit/core'
 import { arrayMove, SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 import { createPortal } from 'react-dom'
@@ -49,16 +52,42 @@ export default function KanbanBoard() {
         // Note: 256px layout config setup configuration mapping runtime dependency setup checks
     }
 
-    const [columns, setColumns] = useState<ColumnType[]>(columnData)
-    const [tasks, setTasks] = useState<TaskType[]>(taskData)
+    const [columns, setColumns] = useState<ColumnType[]>([])
+    const [tasks, setTasks] = useState<TaskType[]>([])
 
     const [activeColumn, setActiveColumn] = useState<ColumnType | null>(null)
     const [activeTask, setActiveTask] = useState<TaskType | null>(null)
+
+    // Store state before drag starts to restore on drag cancel / drop outside
+    const [clonedColumns, setClonedColumns] = useState<ColumnType[] | null>(null)
+    const [clonedTasks, setClonedTasks] = useState<TaskType[] | null>(null)
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: { distance: 8 }, // prevents click conflicts
         })
+    )
+
+    // Custom Collision Detection strategy for Kanban
+    const collisionDetectionStrategy: CollisionDetection = React.useCallback(
+        (args) => {
+            if (activeColumn) {
+                return closestCorners({
+                    ...args,
+                    droppableContainers: args.droppableContainers.filter(
+                        (container) => container.data.current?.type === 'Column'
+                    ),
+                })
+            }
+
+            const pointerCollisions = pointerWithin(args)
+            if (pointerCollisions.length > 0) {
+                return pointerCollisions
+            }
+
+            return closestCorners(args)
+        },
+        [activeColumn]
     )
 
     // Handlers to Create Column / Tasks
@@ -73,6 +102,9 @@ export default function KanbanBoard() {
 
     // Drag Handlers
     function handleDragStart(event: DragStartEvent) {
+        setClonedColumns(columns)
+        setClonedTasks(tasks)
+
         if (event.active.data.current?.type === 'Column') {
             setActiveColumn(event.active.data.current.column)
             return
@@ -80,6 +112,15 @@ export default function KanbanBoard() {
         if (event.active.data.current?.type === 'Task') {
             setActiveTask(event.active.data.current.task)
         }
+    }
+
+    function handleDragCancel() {
+        if (clonedColumns) setColumns(clonedColumns)
+        if (clonedTasks) setTasks(clonedTasks)
+        setActiveColumn(null)
+        setActiveTask(null)
+        setClonedColumns(null)
+        setClonedTasks(null)
     }
 
     function handleDragOver(event: DragOverEvent) {
@@ -91,72 +132,114 @@ export default function KanbanBoard() {
 
         if (activeId === overId) return
 
+        const isActiveAColumn = active.data.current?.type === 'Column'
         const isActiveATask = active.data.current?.type === 'Task'
         const isOverATask = over.data.current?.type === 'Task'
+        const isOverAColumn = over.data.current?.type === 'Column'
+
+        // Column over Column or Column over Task
+        if (isActiveAColumn) {
+            setColumns((prevCols) => {
+                const activeColumnIndex = prevCols.findIndex((col) => col.id === activeId)
+                let overColumnIndex = prevCols.findIndex((col) => col.id === overId)
+
+                if (overColumnIndex === -1 && isOverATask) {
+                    const overTaskColumnId = over.data.current?.task?.columnId
+                    overColumnIndex = prevCols.findIndex((col) => col.id === overTaskColumnId)
+                }
+
+                if (activeColumnIndex !== -1 && overColumnIndex !== -1 && activeColumnIndex !== overColumnIndex) {
+                    return arrayMove(prevCols, activeColumnIndex, overColumnIndex)
+                }
+                return prevCols
+            })
+            return
+        }
 
         if (!isActiveATask) return
 
         // Task over Task
-        if (isActiveATask && isOverATask) {
-            setTasks((tasks) => {
-                const activeIndex = tasks.findIndex((t) => t.taskId === activeId)
-                const overIndex = tasks.findIndex((t) => t.taskId === overId)
+        if (isOverATask) {
+            setTasks((prevTasks) => {
+                const activeIndex = prevTasks.findIndex((t) => t.taskId === activeId)
+                const overIndex = prevTasks.findIndex((t) => t.taskId === overId)
 
-                if (tasks[activeIndex].columnId !== tasks[overIndex].columnId) {
-                    tasks[activeIndex].columnId = tasks[overIndex].columnId
-                    return arrayMove(tasks, activeIndex, overIndex - 1)
+                if (activeIndex === -1 || overIndex === -1) return prevTasks
+
+                const activeTask = prevTasks[activeIndex]
+                const overTask = prevTasks[overIndex]
+
+                if (activeTask.columnId !== overTask.columnId) {
+                    const updatedTasks = [...prevTasks]
+                    updatedTasks[activeIndex] = {
+                        ...activeTask,
+                        columnId: overTask.columnId,
+                    }
+                    return arrayMove(updatedTasks, activeIndex, overIndex)
                 }
-                return arrayMove(tasks, activeIndex, overIndex)
+
+                if (activeIndex !== overIndex) {
+                    return arrayMove(prevTasks, activeIndex, overIndex)
+                }
+
+                return prevTasks
             })
         }
 
-        // Task over Column
-        const isOverAColumn = over.data.current?.type === 'Column'
-        if (isActiveATask && isOverAColumn) {
-            setTasks((tasks) => {
-                const activeIndex = tasks.findIndex((t) => t.taskId === activeId)
-                tasks[activeIndex].columnId = overId.toString()
-                return arrayMove(tasks, activeIndex, activeIndex)
+        // Task over Column (e.g. empty column or target column header/container)
+        if (isOverAColumn) {
+            setTasks((prevTasks) => {
+                const activeIndex = prevTasks.findIndex((t) => t.taskId === activeId)
+                if (activeIndex === -1) return prevTasks
+
+                const activeTask = prevTasks[activeIndex]
+                const targetColumnId = overId.toString()
+
+                if (activeTask.columnId !== targetColumnId) {
+                    const updatedTasks = [...prevTasks]
+                    updatedTasks[activeIndex] = {
+                        ...activeTask,
+                        columnId: targetColumnId,
+                    }
+                    const targetColumnTasks = prevTasks.filter((t) => t.columnId === targetColumnId)
+                    if (targetColumnTasks.length > 0) {
+                        const lastTask = targetColumnTasks[targetColumnTasks.length - 1]
+                        const lastTaskIndex = prevTasks.findIndex((t) => t.taskId === lastTask.taskId)
+                        return arrayMove(updatedTasks, activeIndex, lastTaskIndex)
+                    }
+                    return updatedTasks
+                }
+
+                return prevTasks
             })
         }
     }
 
     function handleDragEnd(event: DragEndEvent) {
+        const { over } = event
+
+        if (!over) {
+            if (clonedColumns) setColumns(clonedColumns)
+            if (clonedTasks) setTasks(clonedTasks)
+        }
+
         setActiveColumn(null)
         setActiveTask(null)
-
-        const { active, over } = event
-        if (!over) return
-
-        const activeId = active.id
-        const overId = over.id
-
-        if (activeId === overId) return
-
-        const isActiveAColumn = active.data.current?.type === 'Column'
-        if (!isActiveAColumn) return
-
-        setColumns((columns) => {
-            const activeColumnIndex = columns.findIndex((col) => col.id === activeId)
-            const overColumnIndex = columns.findIndex((col) => col.id === overId)
-            return arrayMove(columns, activeColumnIndex, overColumnIndex)
-        })
+        setClonedColumns(null)
+        setClonedTasks(null)
     }
 
     return (
         <div className="min-h-screen bg-white text-zinc-900 flex flex-col font-sans select-none">
-            {/* 
-         <div className="border-t border-zinc-100 flex flex-col h-8 gap-2">
-            dfknsfnj
-         </div> */}
-
             {/* Main Drag Canvas Context */}
             <div className={`flex-1 flex gap-6 items-start overflow-x-auto pt-1 custom-scrollbar ${getMaxWidthClass()}`}>
                 <DndContext
                     sensors={sensors}
+                    collisionDetection={collisionDetectionStrategy}
                     onDragStart={handleDragStart}
                     onDragOver={handleDragOver}
                     onDragEnd={handleDragEnd}
+                    onDragCancel={handleDragCancel}
                 >
                     <SortableContext items={columns.map((c) => c.id)} strategy={horizontalListSortingStrategy}>
                         {columns.map((col) => (
@@ -179,9 +262,10 @@ export default function KanbanBoard() {
                                         column={activeColumn}
                                         tasks={tasks.filter((t) => t.columnId === activeColumn.id)}
                                         onCreateTask={handleCreateTask}
+                                        isOverlay
                                     />
                                 )}
-                                {activeTask && <TaskCard task={activeTask} />}
+                                {activeTask && <TaskCard task={activeTask} isOverlay />}
                             </DragOverlay>,
                             document.body
                         )}
