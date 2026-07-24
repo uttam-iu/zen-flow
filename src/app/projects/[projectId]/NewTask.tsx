@@ -9,6 +9,7 @@ import PRIORITY from '@/dummyData/priority.json';
 import TASK_TYPE from '@/dummyData/task_type.json';
 import { Textarea } from '@/components/ui/textarea';
 import Assignee from '@/components/Assignee';
+import { USER_TYPE } from '@/types/user.types';
 
 interface NewTaskProps {
     onCreateTask: (task: TaskType) => void;
@@ -40,7 +41,7 @@ const NewTask: FC<NewTaskProps> = ({ onCreateTask, column, task }) => {
     const [formData, setFormData] = React.useState<TaskType>(getInitialValue(column, task));
     const [showCreateBtn, setShowCreateBtn] = React.useState<boolean>(true);
 
-    const handleOnChange = (_name: string, _value?: string): void => {
+    const handleOnChange = (_name: string, _value?: string | number[]): void => {
         setFormData(prevState => {
             return {
                 ...prevState,
@@ -50,9 +51,9 @@ const NewTask: FC<NewTaskProps> = ({ onCreateTask, column, task }) => {
     };
 
     const handleAddTask = (): void => {
-        setShowCreateBtn(true);
         const fData = { ...formData }
         if (!fData?.taskTitle?.trim()) return;
+        setShowCreateBtn(true);
         onCreateTask({
             ...fData,
             taskId: task?.taskId || `task-${Date.now()}`,
@@ -86,7 +87,7 @@ const NewTask: FC<NewTaskProps> = ({ onCreateTask, column, task }) => {
                                 value={formData?.taskTitle}
                                 onChange={(e) => handleOnChange('taskTitle', e?.target?.value || '')}
                                 className="bg-white min-h-[32px] text-xs "
-                                onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
+                                // onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
                                 // onBlur={handleAddTask}
                                 autoFocus
                             />
@@ -95,7 +96,26 @@ const NewTask: FC<NewTaskProps> = ({ onCreateTask, column, task }) => {
                     <div className='pt-1'>
                         <SelectMenu name='priorityType' onChange={handleOnChange} creatable value={formData?.priorityType || ''} label='Priority' items={PRIORITY} />
                         <SelectMenu name='taskType' onChange={handleOnChange} creatable value={formData?.taskType || ''} label='Task Type' items={TASK_TYPE} />
-                        <Assignee users={[]} creatable />
+                        <Assignee name='assignee' values={formData?.assignee?.map(ec => ec?.userId) || []} creatable onChange={handleOnChange} />
+                    </div>
+
+                    <div className='flex'>
+                        <Button
+                            onClick={() => setShowCreateBtn(true)}
+                            size="sm"
+                            variant="secondary"
+                            className="flex-1 mr-1 bg-lavenderblush hover:bg-zinc-100 border border-zinc-200 text-zinc-700 h-8 text-xs font-medium"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={() => handleAddTask()}
+                            size="sm"
+                            variant="secondary"
+                            className="flex-1 ml-1 bg-lavenderblush hover:bg-zinc-100 border border-zinc-200 text-zinc-700 h-8 text-xs font-medium"
+                        >
+                            Add
+                        </Button>
                     </div>
 
                 </div>

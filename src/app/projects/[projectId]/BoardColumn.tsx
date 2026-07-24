@@ -5,7 +5,7 @@ import { CSS } from '@dnd-kit/utilities'
 import TaskCard from './TaskCard';
 import { ColumnType, TaskType } from '@/types/task.types'
 import NewTask from './NewTask'
-import ColumnHeader from './ColumnHeader'
+import { GripHorizontal } from 'lucide-react';
 
 interface Props {
     column: ColumnType;
@@ -53,12 +53,23 @@ export default function BoardColumn({ column, tasks, onCreateTask }: Props) {
             className="w-[300px] min-w-[300px] bg-zinc-50/50 dark:bg-zinc-900/50 border border-zinc-200/80 rounded-xl flex flex-col p-4"
         >
             {/* Column Header */}
-            <ColumnHeader
-                column={column}
-                totalTasks={tasks?.length}
-                attributes={attributes}
-                listeners={listeners}
-            />
+            <div className="flex items-center justify-between mb-4 pb-2 border-b border-zinc-100">
+                <div className="flex items-center gap-2">
+                    <button
+                        {...attributes}
+                        {...listeners}
+                        className="cursor-grab active:cursor-grabbing text-zinc-400 hover:text-zinc-600"
+                    >
+                        <GripHorizontal size={18} />
+                    </button>
+                    <h3 className="font-semibold text-zinc-800 dark:text-zinc-200 text-sm tracking-tight">
+                        {column?.title}
+                    </h3>
+                </div>
+                <span className="text-xs bg-zinc-200/60 dark:bg-zinc-800 px-2 py-0.5 rounded-full font-medium text-zinc-600">
+                    {tasks?.length}
+                </span>
+            </div>
 
             {/* Task List Context */}
             <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar">

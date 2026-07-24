@@ -40,6 +40,8 @@ export default function TaskCard({ task }: Props) {
         );
     }
 
+    console.log(task)
+
     return (
         <div
             ref={setNodeRef}
